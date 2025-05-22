@@ -9,39 +9,39 @@ import java.util.List;
 @Service
 public class StudentService implements IStudentService{
 
-    private final StudentRepository repository;
+    private final StudentRepository studentRepository;
 
-    public StudentService(StudentRepository repository) {
-        this.repository = repository;
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     @Override
     public String createStudent(Student studentDetails) {
-        repository.save(studentDetails);
+        studentRepository.save(studentDetails);
         return "Student created and saved successfully!";
     }
 
     @Override
     public List<Student> getAllStudents() {
-        return repository.findAll();
+        return studentRepository.findAll();
     }
 
     @Override
     public Student getStudentById(Long id) {
-        return repository
+        return studentRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Student with ID-"+id+" is not found!"));
     }
 
     @Override
     public String updateStudentById(Long id, Student studentDetails) {
-        Student student = repository
+        Student student = studentRepository
                 .findById(id)
                 .orElseThrow(()-> new RuntimeException("Student with ID-"+id+" does not exist!"));
 
         updateStudentDetails(studentDetails, student);
 
-        repository.save(student);
+        studentRepository.save(student);
 
         return "Student with ID-"+id+" has been updated successfully!";
     }
@@ -60,10 +60,10 @@ public class StudentService implements IStudentService{
 
     @Override
     public String deleteStudentById(Long id) {
-        if(!repository.existsById(id)){
+        if(!studentRepository.existsById(id)){
             throw new RuntimeException("Student with ID-"+id+" does not exist!");
         }
-        repository.deleteById(id);
+        studentRepository.deleteById(id);
         return "Student with ID-"+id+" has been deleted successfully!";
     }
 }
