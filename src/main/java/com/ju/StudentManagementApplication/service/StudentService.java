@@ -16,9 +16,9 @@ public class StudentService implements IStudentService{
     }
 
     @Override
-    public String createStudent(Student studentDetails) {
+    public Student createStudent(Student studentDetails) {
         studentRepository.save(studentDetails);
-        return "Student created and saved successfully!";
+        return studentDetails;
     }
 
     @Override

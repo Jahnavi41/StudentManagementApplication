@@ -5,7 +5,7 @@ import com.ju.StudentManagementApplication.entity.Student;
 import java.util.List;
 
 public interface IStudentService {
-    String createStudent(Student studentDetails);
+    Student createStudent(Student studentDetails);
     List<Student> getAllStudents();
     Student getStudentById(Long id);
     String updateStudentById(Long id, Student studentDetails);
