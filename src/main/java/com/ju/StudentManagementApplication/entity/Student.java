@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Table(name="students")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student {
@@ -33,8 +34,8 @@ public class Student {
     @Column(nullable = false)
     private int semester;
 
-    @Column(nullable = false)
-    private char section;
+    @Column(nullable = false, length=1)
+    private String section;
 
     @Column(nullable = false)
     private String email;
