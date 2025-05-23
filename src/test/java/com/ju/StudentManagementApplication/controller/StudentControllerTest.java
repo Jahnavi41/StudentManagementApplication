@@ -2,6 +2,8 @@ package com.ju.StudentManagementApplication.controller;
 
 import com.ju.StudentManagementApplication.entity.Student;
 import com.ju.StudentManagementApplication.service.IStudentService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
@@ -12,17 +14,22 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+@DisplayName("Student Controller Tests")
 public class StudentControllerTest {
 
     private final TestService service = new TestService();
     private final StudentController controller = new StudentController(service);
+    Student sampleStudent;
+
+    @BeforeEach
+    void setUp() {
+        service.clearData();
+        sampleStudent = getStudentDetails();
+        service.addData(sampleStudent);
+    }
 
     @Test
     void shouldReturnAllStudents() {
-        service.clearData();
-        Student actual = getStudentDetails();
-        service.addData(actual);
-
         ResponseEntity<List<Student>> students =controller.getAllStudents();
 
         List<Student> result = students.getBody();
@@ -30,56 +37,36 @@ public class StudentControllerTest {
         assertThat(result)
                 .isNotNull()
                 .hasSize(1)
-                .containsExactly(actual);
-
+                .containsExactly(sampleStudent);
     }
 
 
     @Test
     void shouldReturnSpecificStudent() {
-        service.clearData();
-        Student actual = getStudentDetails();
-        service.addData(actual);
-
-        ResponseEntity<Student> student = controller.getStudentById(actual.getId());
+        ResponseEntity<Student> student = controller.getStudentById(sampleStudent.getId());
 
         Student result = student.getBody();
 
         assertThat(result)
                 .isNotNull()
-                .isEqualTo(actual);
+                .isEqualTo(sampleStudent);
     }
 
     @Test
     void shouldCreateStudent() {
-        service.clearData();
-        Student actual = getStudentDetails();
-        service.addData(actual);
-
-        ResponseEntity<Student> response = controller.createStudent(actual);
-
-        assertThat(response.getBody()).isEqualTo(actual);
+        ResponseEntity<Student> response = controller.createStudent(sampleStudent);
+        assertThat(response.getBody()).isEqualTo(sampleStudent);
     }
 
     @Test
     void shouldUpdateStudent() {
-        service.clearData();
-        Student actual = getStudentDetails();
-        service.addData(actual);
-
-        ResponseEntity<String> response = controller.updateStudentById(actual.getId(), actual);
-
+        ResponseEntity<String> response = controller.updateStudentById(sampleStudent.getId(), sampleStudent);
         assertThat(response.getBody()).isEqualTo("Student Updated successfully!");
     }
 
     @Test
     void shouldDeleteStudent() {
-        service.clearData();
-        Student actual = getStudentDetails();
-        service.addData(actual);
-
-        ResponseEntity<String> response = controller.deleteStudentById(actual.getId());
-
+        ResponseEntity<String> response = controller.deleteStudentById(sampleStudent.getId());
         assertThat(response.getBody()).isEqualTo("Student Deleted successfully!");
     }
 
